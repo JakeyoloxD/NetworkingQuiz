@@ -1,8 +1,8 @@
 {
   "title": "Cisco Exam Quiz Questions",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Quiz bank built from the uploaded Cisco study sheet photos, with extra similar Cisco-style questions added for practice.",
-  "question_count": 150,
+  "question_count": 212,
   "schema": {
     "id": "unique string",
     "category": "topic area",
@@ -1569,12 +1569,12 @@
       "source": "generated_similar",
       "question": "What destination MAC address is usually used in an ARP reply?",
       "choices": [
-        "The requester\u2019s MAC address",
+        "The requester’s MAC address",
         "FF:FF:FF:FF:FF:FF",
         "The router's public IP",
         "255.255.255.255"
       ],
-      "answer": "The requester\u2019s MAC address",
+      "answer": "The requester’s MAC address",
       "explanation": "ARP replies are normally unicast back to the requesting host.",
       "difficulty": "medium",
       "tags": [
@@ -2862,6 +2862,1200 @@
       "tags": [
         "cisco-cli",
         "console"
+      ]
+    },
+    {
+      "id": "na-001",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "What is the purpose of the service password-encryption command?",
+      "choices": [
+        "It encrypts all plaintext passwords stored in the configuration file",
+        "It generates RSA keys for SSH access",
+        "It forces all users to authenticate with a username",
+        "It encrypts traffic leaving the device"
+      ],
+      "answer": "It encrypts all plaintext passwords stored in the configuration file",
+      "explanation": "service password-encryption applies a weak encryption to plaintext passwords so they are not readable in the running config.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "security",
+        "passwords"
+      ]
+    },
+    {
+      "id": "na-002",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "A network administrator needs the device configuration to remain after a reboot. Which command should be used?",
+      "choices": [
+        "copy running-config startup-config",
+        "copy startup-config running-config",
+        "reload",
+        "erase startup-config"
+      ],
+      "answer": "copy running-config startup-config",
+      "explanation": "The running config lives in RAM and is lost on reload; copying it to the startup config saves it to NVRAM.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "save",
+        "nvram"
+      ]
+    },
+    {
+      "id": "na-003",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "Which command is used to set an encrypted password that secures access to privileged EXEC mode?",
+      "choices": [
+        "enable secret",
+        "enable password",
+        "login local",
+        "service password-encryption"
+      ],
+      "answer": "enable secret",
+      "explanation": "enable secret stores a hashed password for privileged EXEC and is preferred over enable password, which can be stored in plaintext.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "security",
+        "enable"
+      ]
+    },
+    {
+      "id": "na-004",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "What must be configured on a switch or router before the crypto key generate rsa command will work?",
+      "choices": [
+        "A hostname and an IP domain name",
+        "A default gateway",
+        "A console password",
+        "A VLAN"
+      ],
+      "answer": "A hostname and an IP domain name",
+      "explanation": "The RSA key is labelled with the device's fully qualified domain name, so both a hostname and ip domain-name must be set first.",
+      "difficulty": "medium",
+      "tags": [
+        "ssh",
+        "cli",
+        "security"
+      ]
+    },
+    {
+      "id": "na-005",
+      "category": "Remote Access",
+      "source": "netacad_style",
+      "question": "Which command restricts the VTY lines so that only SSH connections are accepted?",
+      "choices": [
+        "transport input ssh",
+        "login local",
+        "transport input telnet",
+        "ip ssh version 2"
+      ],
+      "answer": "transport input ssh",
+      "explanation": "transport input ssh on the VTY lines blocks Telnet and permits only encrypted SSH sessions.",
+      "difficulty": "medium",
+      "tags": [
+        "ssh",
+        "vty",
+        "security"
+      ]
+    },
+    {
+      "id": "na-006",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "Which command displays a brief summary of all interfaces, their IP addresses, and their operational status?",
+      "choices": [
+        "show ip interface brief",
+        "show running-config",
+        "show version",
+        "show mac address-table"
+      ],
+      "answer": "show ip interface brief",
+      "explanation": "show ip interface brief lists each interface with its IPv4 address, line protocol, and status in a compact table.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "show",
+        "troubleshooting"
+      ]
+    },
+    {
+      "id": "na-007",
+      "category": "Router Configuration",
+      "source": "netacad_style",
+      "question": "Where is the management IP address configured on a Layer 2 switch?",
+      "choices": [
+        "On a switch virtual interface (SVI), such as interface vlan 1",
+        "On a physical access port",
+        "On the console line",
+        "In the startup-config only"
+      ],
+      "answer": "On a switch virtual interface (SVI), such as interface vlan 1",
+      "explanation": "A Layer 2 switch has no routed physical interfaces, so its management address is assigned to an SVI like VLAN 1.",
+      "difficulty": "medium",
+      "tags": [
+        "switch",
+        "svi",
+        "management"
+      ]
+    },
+    {
+      "id": "na-008",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "What is the effect of issuing the no shutdown command on a router interface?",
+      "choices": [
+        "It administratively enables the interface",
+        "It saves the configuration",
+        "It removes the IP address",
+        "It disables the interface"
+      ],
+      "answer": "It administratively enables the interface",
+      "explanation": "Router interfaces are administratively down by default; no shutdown brings the interface up.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "interface"
+      ]
+    },
+    {
+      "id": "na-009",
+      "category": "Cisco CLI",
+      "source": "netacad_style",
+      "question": "A device prompt shows Switch(config-line)#. Which configuration mode is active?",
+      "choices": [
+        "Line configuration mode",
+        "Global configuration mode",
+        "Interface configuration mode",
+        "Privileged EXEC mode"
+      ],
+      "answer": "Line configuration mode",
+      "explanation": "The (config-line) prompt indicates line configuration mode, used for console and VTY lines.",
+      "difficulty": "easy",
+      "tags": [
+        "cli",
+        "modes"
+      ]
+    },
+    {
+      "id": "na-010",
+      "category": "Remote Access",
+      "source": "netacad_style",
+      "question": "Which command configures the VTY lines to authenticate users against the locally configured username database?",
+      "choices": [
+        "login local",
+        "login",
+        "password cisco",
+        "enable secret"
+      ],
+      "answer": "login local",
+      "explanation": "login local tells the line to check credentials against locally configured username/secret entries rather than only a line password.",
+      "difficulty": "medium",
+      "tags": [
+        "ssh",
+        "vty",
+        "aaa"
+      ]
+    },
+    {
+      "id": "na-011",
+      "category": "Security",
+      "source": "netacad_style",
+      "question": "What is the default violation mode applied when port security is enabled on a switch port?",
+      "choices": [
+        "Shutdown",
+        "Protect",
+        "Restrict",
+        "Disable"
+      ],
+      "answer": "Shutdown",
+      "explanation": "By default a port-security violation puts the port into the err-disabled (shutdown) state.",
+      "difficulty": "medium",
+      "tags": [
+        "port-security",
+        "switch"
+      ]
+    },
+    {
+      "id": "na-012",
+      "category": "Security",
+      "source": "netacad_style",
+      "question": "What does the sticky keyword do when configured with switchport port-security mac-address?",
+      "choices": [
+        "Dynamically learns MAC addresses and adds them to the running configuration",
+        "Permanently blocks all MAC addresses",
+        "Encrypts the MAC address table",
+        "Disables MAC learning"
+      ],
+      "answer": "Dynamically learns MAC addresses and adds them to the running configuration",
+      "explanation": "Sticky learning converts dynamically learned MACs into running-config entries so they persist if saved.",
+      "difficulty": "medium",
+      "tags": [
+        "port-security",
+        "switch",
+        "mac"
+      ]
+    },
+    {
+      "id": "na-013",
+      "category": "Security",
+      "source": "netacad_style",
+      "question": "Which switch security feature mitigates rogue DHCP server attacks?",
+      "choices": [
+        "DHCP snooping",
+        "Port security",
+        "STP",
+        "DTP"
+      ],
+      "answer": "DHCP snooping",
+      "explanation": "DHCP snooping designates trusted ports and drops DHCP server messages arriving on untrusted ports, stopping rogue servers.",
+      "difficulty": "medium",
+      "tags": [
+        "dhcp",
+        "security",
+        "layer2"
+      ]
+    },
+    {
+      "id": "na-014",
+      "category": "AAA",
+      "source": "netacad_style",
+      "question": "What do the three A's in AAA network security stand for?",
+      "choices": [
+        "Authentication, Authorization, Accounting",
+        "Access, Auditing, Authentication",
+        "Authorization, Access, Auditing",
+        "Authentication, Access, Accounting"
+      ],
+      "answer": "Authentication, Authorization, Accounting",
+      "explanation": "AAA provides Authentication (who you are), Authorization (what you can do), and Accounting (what you did).",
+      "difficulty": "easy",
+      "tags": [
+        "aaa",
+        "security"
+      ]
+    },
+    {
+      "id": "na-015",
+      "category": "Network Security",
+      "source": "netacad_style",
+      "question": "What is the goal of a brute-force password attack?",
+      "choices": [
+        "To try many password combinations until the correct one is found",
+        "To intercept traffic on a switch",
+        "To flood a server with traffic",
+        "To redirect DNS queries"
+      ],
+      "answer": "To try many password combinations until the correct one is found",
+      "explanation": "A brute-force attack systematically attempts password combinations until access is gained.",
+      "difficulty": "easy",
+      "tags": [
+        "security",
+        "attacks"
+      ]
+    },
+    {
+      "id": "na-016",
+      "category": "OSI Model",
+      "source": "netacad_style",
+      "question": "At which layer of the OSI model does a router make forwarding decisions?",
+      "choices": [
+        "Network layer",
+        "Data link layer",
+        "Transport layer",
+        "Physical layer"
+      ],
+      "answer": "Network layer",
+      "explanation": "Routers forward packets based on Layer 3 (Network) logical IP addresses.",
+      "difficulty": "easy",
+      "tags": [
+        "osi",
+        "router"
+      ]
+    },
+    {
+      "id": "na-017",
+      "category": "Data Encapsulation",
+      "source": "netacad_style",
+      "question": "What is the protocol data unit (PDU) at the transport layer?",
+      "choices": [
+        "Segment",
+        "Packet",
+        "Frame",
+        "Bit"
+      ],
+      "answer": "Segment",
+      "explanation": "The transport layer PDU is the segment (TCP) or datagram (UDP).",
+      "difficulty": "easy",
+      "tags": [
+        "pdu",
+        "encapsulation"
+      ]
+    },
+    {
+      "id": "na-018",
+      "category": "Data Encapsulation",
+      "source": "netacad_style",
+      "question": "What is the protocol data unit (PDU) at the data link layer?",
+      "choices": [
+        "Frame",
+        "Packet",
+        "Segment",
+        "Bit"
+      ],
+      "answer": "Frame",
+      "explanation": "The data link layer encapsulates packets into frames with a header and trailer.",
+      "difficulty": "easy",
+      "tags": [
+        "pdu",
+        "encapsulation"
+      ]
+    },
+    {
+      "id": "na-019",
+      "category": "OSI Model",
+      "source": "netacad_style",
+      "question": "Which OSI layer is responsible for logical addressing and path determination?",
+      "choices": [
+        "Network layer",
+        "Data link layer",
+        "Session layer",
+        "Presentation layer"
+      ],
+      "answer": "Network layer",
+      "explanation": "The network layer handles logical (IP) addressing and routing path selection.",
+      "difficulty": "easy",
+      "tags": [
+        "osi",
+        "addressing"
+      ]
+    },
+    {
+      "id": "na-020",
+      "category": "Encapsulation",
+      "source": "netacad_style",
+      "question": "What is the correct order of encapsulation as data moves down the OSI stack?",
+      "choices": [
+        "Data, segment, packet, frame, bits",
+        "Bits, frame, packet, segment, data",
+        "Packet, segment, frame, data, bits",
+        "Frame, packet, segment, bits, data"
+      ],
+      "answer": "Data, segment, packet, frame, bits",
+      "explanation": "Going down the stack the PDU becomes data, then segment, packet, frame, and finally bits on the wire.",
+      "difficulty": "medium",
+      "tags": [
+        "encapsulation",
+        "osi"
+      ]
+    },
+    {
+      "id": "na-021",
+      "category": "Transport Layer",
+      "source": "netacad_style",
+      "question": "Which transport layer protocol is connection-oriented and provides reliable delivery?",
+      "choices": [
+        "TCP",
+        "UDP",
+        "IP",
+        "ICMP"
+      ],
+      "answer": "TCP",
+      "explanation": "TCP establishes a session, sequences data, and retransmits lost segments, providing reliable delivery.",
+      "difficulty": "easy",
+      "tags": [
+        "tcp",
+        "transport"
+      ]
+    },
+    {
+      "id": "na-022",
+      "category": "TCP",
+      "source": "netacad_style",
+      "question": "What does the TCP three-way handshake establish before data is exchanged?",
+      "choices": [
+        "A reliable, synchronized session between two hosts",
+        "A routing table entry",
+        "A DNS record",
+        "A VLAN assignment"
+      ],
+      "answer": "A reliable, synchronized session between two hosts",
+      "explanation": "SYN, SYN-ACK, ACK synchronize sequence numbers and establish a connection before data transfer.",
+      "difficulty": "medium",
+      "tags": [
+        "tcp",
+        "handshake"
+      ]
+    },
+    {
+      "id": "na-023",
+      "category": "UDP",
+      "source": "netacad_style",
+      "question": "Why is UDP often preferred for voice and video streaming?",
+      "choices": [
+        "It has low overhead and does not delay delivery with retransmissions",
+        "It guarantees delivery of every packet",
+        "It encrypts the data stream",
+        "It uses the three-way handshake"
+      ],
+      "answer": "It has low overhead and does not delay delivery with retransmissions",
+      "explanation": "Real-time media tolerates some loss but not delay, so UDP's lack of retransmission and low overhead suit it.",
+      "difficulty": "medium",
+      "tags": [
+        "udp",
+        "voip"
+      ]
+    },
+    {
+      "id": "na-024",
+      "category": "Ports",
+      "source": "netacad_style",
+      "question": "Which port number does HTTPS use by default?",
+      "choices": [
+        "443",
+        "80",
+        "21",
+        "23"
+      ],
+      "answer": "443",
+      "explanation": "HTTPS (HTTP over TLS) uses well-known TCP port 443.",
+      "difficulty": "easy",
+      "tags": [
+        "ports",
+        "https"
+      ]
+    },
+    {
+      "id": "na-025",
+      "category": "Ports",
+      "source": "netacad_style",
+      "question": "What is the well-known (system) port number range?",
+      "choices": [
+        "0 to 1023",
+        "1024 to 49151",
+        "49152 to 65535",
+        "0 to 255"
+      ],
+      "answer": "0 to 1023",
+      "explanation": "Well-known ports range from 0 to 1023 and are assigned to common services.",
+      "difficulty": "easy",
+      "tags": [
+        "ports",
+        "ranges"
+      ]
+    },
+    {
+      "id": "na-026",
+      "category": "IPv4",
+      "source": "netacad_style",
+      "question": "Which of the following is a private IPv4 address range?",
+      "choices": [
+        "172.16.0.0 to 172.31.255.255",
+        "11.0.0.0 to 11.255.255.255",
+        "200.1.0.0 to 200.1.255.255",
+        "8.8.0.0 to 8.8.255.255"
+      ],
+      "answer": "172.16.0.0 to 172.31.255.255",
+      "explanation": "RFC 1918 private ranges are 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16.",
+      "difficulty": "medium",
+      "tags": [
+        "ipv4",
+        "private"
+      ]
+    },
+    {
+      "id": "na-027",
+      "category": "IPv4",
+      "source": "netacad_style",
+      "question": "A host has automatically assigned itself an address in the 169.254.0.0/16 range. What does this indicate?",
+      "choices": [
+        "The host could not reach a DHCP server (APIPA)",
+        "The host has a static public address",
+        "The host is on the loopback network",
+        "The host has a valid default gateway"
+      ],
+      "answer": "The host could not reach a DHCP server (APIPA)",
+      "explanation": "169.254.0.0/16 is the APIPA range used when a client fails to obtain an address from DHCP.",
+      "difficulty": "medium",
+      "tags": [
+        "ipv4",
+        "apipa",
+        "dhcp"
+      ]
+    },
+    {
+      "id": "na-028",
+      "category": "Addressing",
+      "source": "netacad_style",
+      "question": "What is the purpose of a default gateway on a host?",
+      "choices": [
+        "It forwards traffic destined for other networks",
+        "It resolves domain names to IP addresses",
+        "It assigns IP addresses to clients",
+        "It encrypts outbound traffic"
+      ],
+      "answer": "It forwards traffic destined for other networks",
+      "explanation": "The default gateway is the router interface a host uses to reach destinations outside its local subnet.",
+      "difficulty": "easy",
+      "tags": [
+        "gateway",
+        "routing"
+      ]
+    },
+    {
+      "id": "na-029",
+      "category": "Subnetting",
+      "source": "netacad_style",
+      "question": "What is the network address of the host 192.168.10.45/26?",
+      "choices": [
+        "192.168.10.0",
+        "192.168.10.32",
+        "192.168.10.64",
+        "192.168.10.40"
+      ],
+      "answer": "192.168.10.0",
+      "explanation": "A /26 has a block size of 64, so .45 falls in the 0 to 63 subnet; the network address is 192.168.10.0.",
+      "difficulty": "medium",
+      "tags": [
+        "subnetting",
+        "vlsm"
+      ]
+    },
+    {
+      "id": "na-030",
+      "category": "Subnetting",
+      "source": "netacad_style",
+      "question": "How many usable host addresses are available in a /27 subnet?",
+      "choices": [
+        "30",
+        "32",
+        "14",
+        "62"
+      ],
+      "answer": "30",
+      "explanation": "A /27 has 5 host bits: 2^5 - 2 = 30 usable hosts.",
+      "difficulty": "medium",
+      "tags": [
+        "subnetting",
+        "hosts"
+      ]
+    },
+    {
+      "id": "na-031",
+      "category": "Subnetting",
+      "source": "netacad_style",
+      "question": "What is the broadcast address of the subnet 192.168.1.0/26?",
+      "choices": [
+        "192.168.1.63",
+        "192.168.1.255",
+        "192.168.1.127",
+        "192.168.1.64"
+      ],
+      "answer": "192.168.1.63",
+      "explanation": "Block size 64 means the first subnet is .0 to .63, so the broadcast is 192.168.1.63.",
+      "difficulty": "medium",
+      "tags": [
+        "subnetting",
+        "broadcast"
+      ]
+    },
+    {
+      "id": "na-032",
+      "category": "IPv6",
+      "source": "netacad_style",
+      "question": "Which prefix identifies an IPv6 link-local address?",
+      "choices": [
+        "fe80::/10",
+        "2000::/3",
+        "::1/128",
+        "ff00::/8"
+      ],
+      "answer": "fe80::/10",
+      "explanation": "Link-local IPv6 addresses use the fe80::/10 range and are valid only on the local link.",
+      "difficulty": "medium",
+      "tags": [
+        "ipv6",
+        "link-local"
+      ]
+    },
+    {
+      "id": "na-033",
+      "category": "IPv6",
+      "source": "netacad_style",
+      "question": "What is the IPv6 loopback address?",
+      "choices": [
+        "::1",
+        "127.0.0.1",
+        "fe80::1",
+        "ff02::1"
+      ],
+      "answer": "::1",
+      "explanation": "The IPv6 loopback address is ::1, equivalent to 127.0.0.1 in IPv4.",
+      "difficulty": "easy",
+      "tags": [
+        "ipv6",
+        "loopback"
+      ]
+    },
+    {
+      "id": "na-034",
+      "category": "IPv6",
+      "source": "netacad_style",
+      "question": "Which protocol replaces ARP for address resolution in IPv6?",
+      "choices": [
+        "Neighbor Discovery Protocol (NDP)",
+        "DHCPv6",
+        "ICMPv4",
+        "DNS"
+      ],
+      "answer": "Neighbor Discovery Protocol (NDP)",
+      "explanation": "IPv6 uses NDP (via ICMPv6) for neighbor and router discovery, replacing IPv4 ARP.",
+      "difficulty": "medium",
+      "tags": [
+        "ipv6",
+        "ndp",
+        "arp"
+      ]
+    },
+    {
+      "id": "na-035",
+      "category": "IPv6",
+      "source": "netacad_style",
+      "question": "How many bits long is an IPv6 address?",
+      "choices": [
+        "128",
+        "64",
+        "32",
+        "256"
+      ],
+      "answer": "128",
+      "explanation": "An IPv6 address is 128 bits, usually written as eight groups of four hex digits.",
+      "difficulty": "easy",
+      "tags": [
+        "ipv6",
+        "addressing"
+      ]
+    },
+    {
+      "id": "na-036",
+      "category": "DHCP",
+      "source": "netacad_style",
+      "question": "What is the correct order of messages in the DHCP DORA process?",
+      "choices": [
+        "Discover, Offer, Request, Acknowledge",
+        "Discover, Request, Offer, Acknowledge",
+        "Offer, Discover, Acknowledge, Request",
+        "Request, Offer, Discover, Acknowledge"
+      ],
+      "answer": "Discover, Offer, Request, Acknowledge",
+      "explanation": "A client leases an address through Discover, Offer, Request, and Acknowledge (DORA).",
+      "difficulty": "medium",
+      "tags": [
+        "dhcp",
+        "dora"
+      ]
+    },
+    {
+      "id": "na-037",
+      "category": "NAT",
+      "source": "netacad_style",
+      "question": "What is the primary purpose of NAT?",
+      "choices": [
+        "To translate private IPv4 addresses into public addresses",
+        "To resolve hostnames to IP addresses",
+        "To assign IP addresses dynamically",
+        "To encrypt traffic between sites"
+      ],
+      "answer": "To translate private IPv4 addresses into public addresses",
+      "explanation": "NAT lets hosts with private addresses communicate over the public Internet by translating to public addresses.",
+      "difficulty": "easy",
+      "tags": [
+        "nat",
+        "ipv4"
+      ]
+    },
+    {
+      "id": "na-038",
+      "category": "NAT",
+      "source": "netacad_style",
+      "question": "How does PAT (NAT overload) distinguish between multiple internal sessions sharing one public address?",
+      "choices": [
+        "By using unique source port numbers",
+        "By using different MAC addresses",
+        "By assigning each host a public IP",
+        "By using VLAN tags"
+      ],
+      "answer": "By using unique source port numbers",
+      "explanation": "PAT tracks sessions by mapping unique source port numbers to the single public address.",
+      "difficulty": "medium",
+      "tags": [
+        "nat",
+        "pat",
+        "ports"
+      ]
+    },
+    {
+      "id": "na-039",
+      "category": "DNS",
+      "source": "netacad_style",
+      "question": "What service does DNS provide?",
+      "choices": [
+        "It resolves domain names to IP addresses",
+        "It assigns IP addresses to clients",
+        "It encrypts web traffic",
+        "It forwards email between servers"
+      ],
+      "answer": "It resolves domain names to IP addresses",
+      "explanation": "DNS maps human-readable names to IP addresses so hosts can be reached by name.",
+      "difficulty": "easy",
+      "tags": [
+        "dns",
+        "names"
+      ]
+    },
+    {
+      "id": "na-040",
+      "category": "ARP",
+      "source": "netacad_style",
+      "question": "What does ARP resolve on an IPv4 network?",
+      "choices": [
+        "A known IP address to a MAC address",
+        "A MAC address to an IP address",
+        "A domain name to an IP address",
+        "A port number to a service"
+      ],
+      "answer": "A known IP address to a MAC address",
+      "explanation": "ARP maps a known IPv4 address to the corresponding MAC address for Layer 2 delivery.",
+      "difficulty": "easy",
+      "tags": [
+        "arp",
+        "mac"
+      ]
+    },
+    {
+      "id": "na-041",
+      "category": "Switching",
+      "source": "netacad_style",
+      "question": "How does a switch build its MAC address table?",
+      "choices": [
+        "By recording the source MAC address of incoming frames",
+        "By reading the destination IP of packets",
+        "By querying a DNS server",
+        "By using ARP requests only"
+      ],
+      "answer": "By recording the source MAC address of incoming frames",
+      "explanation": "A switch learns by associating the source MAC of each received frame with the port it arrived on.",
+      "difficulty": "medium",
+      "tags": [
+        "switch",
+        "mac-table"
+      ]
+    },
+    {
+      "id": "na-042",
+      "category": "Switching",
+      "source": "netacad_style",
+      "question": "What does a switch do with a frame destined for an unknown unicast MAC address?",
+      "choices": [
+        "Floods it out all ports except the one it arrived on",
+        "Drops the frame",
+        "Sends it only to the default gateway",
+        "Returns it to the sender"
+      ],
+      "answer": "Floods it out all ports except the one it arrived on",
+      "explanation": "With no MAC table entry, the switch floods the unknown unicast out all ports except the ingress port.",
+      "difficulty": "medium",
+      "tags": [
+        "switch",
+        "flooding"
+      ]
+    },
+    {
+      "id": "na-043",
+      "category": "Ethernet",
+      "source": "netacad_style",
+      "question": "What is the destination MAC address of an Ethernet broadcast frame?",
+      "choices": [
+        "FF:FF:FF:FF:FF:FF",
+        "00:00:00:00:00:00",
+        "01:00:5E:00:00:01",
+        "FE:80:00:00:00:01"
+      ],
+      "answer": "FF:FF:FF:FF:FF:FF",
+      "explanation": "The all-ones MAC address FF:FF:FF:FF:FF:FF is the Layer 2 broadcast address.",
+      "difficulty": "easy",
+      "tags": [
+        "ethernet",
+        "broadcast",
+        "mac"
+      ]
+    },
+    {
+      "id": "na-044",
+      "category": "Switching",
+      "source": "netacad_style",
+      "question": "On a switch, how many collision domains exist?",
+      "choices": [
+        "One per switch port",
+        "One for the entire switch",
+        "One per VLAN",
+        "None"
+      ],
+      "answer": "One per switch port",
+      "explanation": "Each switch port is its own collision domain because the switch microsegments the network.",
+      "difficulty": "medium",
+      "tags": [
+        "switch",
+        "collision-domain"
+      ]
+    },
+    {
+      "id": "na-045",
+      "category": "Switching",
+      "source": "netacad_style",
+      "question": "What problem does Spanning Tree Protocol (STP) prevent?",
+      "choices": [
+        "Layer 2 switching loops",
+        "IP address conflicts",
+        "Routing loops",
+        "DNS poisoning"
+      ],
+      "answer": "Layer 2 switching loops",
+      "explanation": "STP blocks redundant paths to prevent broadcast storms and loops in a switched topology.",
+      "difficulty": "medium",
+      "tags": [
+        "stp",
+        "switching",
+        "loops"
+      ]
+    },
+    {
+      "id": "na-046",
+      "category": "VLANs",
+      "source": "netacad_style",
+      "question": "What is the main benefit of configuring VLANs on a switch?",
+      "choices": [
+        "They segment a single switch into multiple broadcast domains",
+        "They increase the speed of each port",
+        "They eliminate the need for a router",
+        "They encrypt frames"
+      ],
+      "answer": "They segment a single switch into multiple broadcast domains",
+      "explanation": "VLANs logically separate ports into independent broadcast domains, improving security and reducing broadcast traffic.",
+      "difficulty": "medium",
+      "tags": [
+        "vlan",
+        "broadcast-domain"
+      ]
+    },
+    {
+      "id": "na-047",
+      "category": "VLANs",
+      "source": "netacad_style",
+      "question": "Which protocol tags frames so multiple VLANs can be carried across a trunk link?",
+      "choices": [
+        "IEEE 802.1Q",
+        "IEEE 802.3",
+        "IEEE 802.11",
+        "HDLC"
+      ],
+      "answer": "IEEE 802.1Q",
+      "explanation": "802.1Q inserts a VLAN tag into the Ethernet frame to identify VLAN membership on trunk links.",
+      "difficulty": "medium",
+      "tags": [
+        "vlan",
+        "trunk",
+        "dot1q"
+      ]
+    },
+    {
+      "id": "na-048",
+      "category": "VLANs",
+      "source": "netacad_style",
+      "question": "What is the default VLAN on a Cisco switch?",
+      "choices": [
+        "VLAN 1",
+        "VLAN 0",
+        "VLAN 99",
+        "VLAN 1024"
+      ],
+      "answer": "VLAN 1",
+      "explanation": "All switch ports are members of VLAN 1 by default until reassigned.",
+      "difficulty": "easy",
+      "tags": [
+        "vlan",
+        "default"
+      ]
+    },
+    {
+      "id": "na-049",
+      "category": "Wireless",
+      "source": "netacad_style",
+      "question": "Which set of channels in the 2.4 GHz band is non-overlapping?",
+      "choices": [
+        "1, 6, 11",
+        "1, 2, 3",
+        "2, 7, 12",
+        "1, 5, 9"
+      ],
+      "answer": "1, 6, 11",
+      "explanation": "Channels 1, 6, and 11 do not overlap in the 2.4 GHz band, minimizing co-channel interference.",
+      "difficulty": "medium",
+      "tags": [
+        "wireless",
+        "channels"
+      ]
+    },
+    {
+      "id": "na-050",
+      "category": "Cabling",
+      "source": "netacad_style",
+      "question": "Which cable type is used to connect a PC to a switch port?",
+      "choices": [
+        "Straight-through",
+        "Crossover",
+        "Rollover",
+        "Coaxial"
+      ],
+      "answer": "Straight-through",
+      "explanation": "A straight-through cable connects unlike devices such as a PC (DTE) to a switch.",
+      "difficulty": "easy",
+      "tags": [
+        "cabling",
+        "ethernet"
+      ]
+    },
+    {
+      "id": "na-051",
+      "category": "Cabling",
+      "source": "netacad_style",
+      "question": "Which cable is traditionally used to connect a PC's serial/USB port to a router's console port for management?",
+      "choices": [
+        "Rollover (console) cable",
+        "Crossover cable",
+        "Straight-through cable",
+        "Fiber patch cable"
+      ],
+      "answer": "Rollover (console) cable",
+      "explanation": "A rollover (console) cable connects a management workstation to a device's console port.",
+      "difficulty": "medium",
+      "tags": [
+        "cabling",
+        "console"
+      ]
+    },
+    {
+      "id": "na-052",
+      "category": "Troubleshooting",
+      "source": "netacad_style",
+      "question": "Which command tests basic IP reachability to a remote host?",
+      "choices": [
+        "ping",
+        "show run",
+        "traceroute",
+        "arp"
+      ],
+      "answer": "ping",
+      "explanation": "ping uses ICMP echo request/reply to verify Layer 3 reachability to a destination.",
+      "difficulty": "easy",
+      "tags": [
+        "troubleshooting",
+        "icmp"
+      ]
+    },
+    {
+      "id": "na-053",
+      "category": "Troubleshooting",
+      "source": "netacad_style",
+      "question": "Which command displays the Layer 3 path and each hop taken to a destination?",
+      "choices": [
+        "traceroute",
+        "ping",
+        "nslookup",
+        "show ip route"
+      ],
+      "answer": "traceroute",
+      "explanation": "traceroute (tracert on Windows) reveals each router hop along the path to a destination.",
+      "difficulty": "easy",
+      "tags": [
+        "troubleshooting",
+        "path"
+      ]
+    },
+    {
+      "id": "na-054",
+      "category": "Network Tools",
+      "source": "netacad_style",
+      "question": "Which command on a host displays the IP configuration, including address, mask, and default gateway?",
+      "choices": [
+        "ipconfig",
+        "ping",
+        "tracert",
+        "netstat"
+      ],
+      "answer": "ipconfig",
+      "explanation": "ipconfig (Windows) or ifconfig/ip (Linux) shows the host's IP configuration.",
+      "difficulty": "easy",
+      "tags": [
+        "tools",
+        "host"
+      ]
+    },
+    {
+      "id": "na-055",
+      "category": "Routing",
+      "source": "netacad_style",
+      "question": "What does a router use to choose the best path to a destination network?",
+      "choices": [
+        "The routing table",
+        "The MAC address table",
+        "The ARP cache",
+        "The running configuration"
+      ],
+      "answer": "The routing table",
+      "explanation": "Routers consult the routing table, selecting the longest-prefix match for the destination.",
+      "difficulty": "easy",
+      "tags": [
+        "routing",
+        "table"
+      ]
+    },
+    {
+      "id": "na-056",
+      "category": "Routing",
+      "source": "netacad_style",
+      "question": "What is indicated by an administrative distance value on a route?",
+      "choices": [
+        "The trustworthiness of the route's source",
+        "The bandwidth of the link",
+        "The number of hops to the destination",
+        "The latency of the path"
+      ],
+      "answer": "The trustworthiness of the route's source",
+      "explanation": "Administrative distance ranks route sources; a lower value is more trusted when multiple sources offer the same route.",
+      "difficulty": "medium",
+      "tags": [
+        "routing",
+        "ad"
+      ]
+    },
+    {
+      "id": "na-057",
+      "category": "Fault Tolerance",
+      "source": "netacad_style",
+      "question": "Why are redundant links often combined with STP in a switched network?",
+      "choices": [
+        "To provide backup paths without creating Layer 2 loops",
+        "To increase the broadcast domain size",
+        "To replace the need for routers",
+        "To reduce the number of VLANs"
+      ],
+      "answer": "To provide backup paths without creating Layer 2 loops",
+      "explanation": "Redundancy improves availability, and STP ensures the redundant paths do not form loops.",
+      "difficulty": "medium",
+      "tags": [
+        "fault-tolerance",
+        "stp"
+      ]
+    },
+    {
+      "id": "na-058",
+      "category": "ICMP",
+      "source": "netacad_style",
+      "question": "Which protocol is used by the ping utility to test connectivity?",
+      "choices": [
+        "ICMP",
+        "TCP",
+        "UDP",
+        "ARP"
+      ],
+      "answer": "ICMP",
+      "explanation": "ping sends ICMP echo requests and listens for echo replies.",
+      "difficulty": "easy",
+      "tags": [
+        "icmp",
+        "ping"
+      ]
+    },
+    {
+      "id": "na-059",
+      "category": "Application Layer",
+      "source": "netacad_style",
+      "question": "Which protocol is used to retrieve email and keep messages synchronized across multiple devices?",
+      "choices": [
+        "IMAP",
+        "POP3",
+        "SMTP",
+        "SNMP"
+      ],
+      "answer": "IMAP",
+      "explanation": "IMAP keeps mail on the server and synchronizes folder state across devices, unlike POP3, which typically downloads and removes mail.",
+      "difficulty": "easy",
+      "tags": [
+        "email",
+        "imap"
+      ]
+    },
+    {
+      "id": "na-060",
+      "category": "Ports",
+      "source": "netacad_style",
+      "question": "Which port does SSH use by default?",
+      "choices": [
+        "22",
+        "23",
+        "80",
+        "443"
+      ],
+      "answer": "22",
+      "explanation": "SSH listens on TCP port 22 for encrypted remote management.",
+      "difficulty": "easy",
+      "tags": [
+        "ports",
+        "ssh"
+      ]
+    },
+    {
+      "id": "na-061",
+      "category": "Ports",
+      "source": "netacad_style",
+      "question": "Which port does Telnet use by default?",
+      "choices": [
+        "23",
+        "22",
+        "21",
+        "25"
+      ],
+      "answer": "23",
+      "explanation": "Telnet uses TCP port 23 and sends data, including passwords, in plaintext.",
+      "difficulty": "easy",
+      "tags": [
+        "ports",
+        "telnet"
+      ]
+    },
+    {
+      "id": "na-062",
+      "category": "Malware",
+      "source": "netacad_style",
+      "question": "Which type of malware disguises itself as legitimate software to trick a user into running it?",
+      "choices": [
+        "Trojan horse",
+        "Worm",
+        "Virus",
+        "Ransomware"
+      ],
+      "answer": "Trojan horse",
+      "explanation": "A Trojan horse appears legitimate but carries malicious code that runs when the user executes it.",
+      "difficulty": "easy",
+      "tags": [
+        "malware",
+        "security"
       ]
     }
   ]

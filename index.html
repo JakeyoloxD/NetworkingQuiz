@@ -183,6 +183,34 @@ table.ref th{background:#0c1324; color:var(--muted)}
 table.ref tr td:first-child, table.ref tr th:first-child{position:sticky; left:0;
   background:#0c1324; color:var(--muted); text-align:left; font-family:system-ui}
 
+/* ---- IOS commands ---- */
+.legend{display:flex; flex-wrap:wrap; gap:14px; align-items:center;
+  font-size:12px; color:var(--muted); margin-bottom:16px}
+.mbadge{display:inline-block; padding:2px 7px; border-radius:6px; font-size:11px;
+  font-family:ui-monospace,monospace; border:1px solid var(--border); background:#0c1324}
+.m-ex{color:#9ca3af} .m-pr{color:#fbbf24} .m-g{color:#5dd8ff}
+.m-l{color:#a78bfa} .m-if{color:#34d399}
+
+.phase{margin-bottom:22px}
+.phase-title{font-weight:700; font-size:15px; color:var(--text); margin-bottom:4px}
+.phase-why{font-size:13px; color:var(--muted); margin-bottom:10px; max-width:720px}
+table.cmd-table{width:100%; border-collapse:collapse; font-size:13px}
+table.cmd-table th, table.cmd-table td{border:1px solid var(--border);
+  padding:8px 10px; text-align:left; vertical-align:top}
+table.cmd-table th{background:#0c1324; color:var(--muted); font-weight:600}
+table.cmd-table td:first-child{white-space:nowrap; text-align:center}
+table.cmd-table code{font-family:ui-monospace,monospace; color:var(--accent); font-size:13px}
+.abbr{display:block; font-size:11px; color:var(--muted); font-family:ui-monospace,monospace; margin-top:2px}
+
+.cmd-task{font-size:18px; color:var(--text); margin:6px 0 16px}
+.mode-name{font-size:13px; color:var(--muted)}
+.cmd-entry{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+#cmdInput{flex:1 1 320px; padding:11px 14px; border-radius:10px; border:1px solid var(--border);
+  background:#0c1324; color:var(--text); font-family:ui-monospace,monospace; font-size:15px}
+#cmdInput:focus{outline:none; border-color:var(--accent)}
+.feedback code, .cmd-task code{font-family:ui-monospace,monospace; color:var(--accent)}
+.cmd-score{margin-top:14px; color:var(--muted); font-size:13px}
+
 </style>
 </head>
 <body>
@@ -197,6 +225,7 @@ table.ref tr td:first-child, table.ref tr th:first-child{position:sticky; left:0
   <nav class="nav container">
     <button class="tab active" data-view="quiz">Quiz</button>
     <button class="tab" data-view="drill">Subnetting Drill</button>
+    <button class="tab" data-view="commands">IOS Commands</button>
   </nav>
 
   <main class="container">
@@ -226,6 +255,7 @@ table.ref tr td:first-child, table.ref tr th:first-child{position:sticky; left:0
     </div>
 
     <div id="drillView" class="view"></div>
+    <div id="commandsView" class="view"></div>
   </main>
 
   <footer class="foot">
@@ -3496,6 +3526,235 @@ function score(correct, total) {
   s.className = "feedback " + (correct === total ? "ok" : "bad");
 }
 
+/* Cisco IOS commands — ordered reference + recall drill.
+   Modes: ex=user EXEC (>), pr=privileged EXEC (#), g=global (config),
+          l=line (config-line), if=interface (config-if)
+*/
+
+const MODES = {
+  ex: { badge: ">", full: "User EXEC" },
+  pr: { badge: "#", full: "Privileged EXEC" },
+  g: { badge: "(config)", full: "Global config" },
+  l: { badge: "(config-line)", full: "Line config" },
+  if: { badge: "(config-if)", full: "Interface config" },
+};
+
+const PHASES = [
+  {
+    title: "1. Get into configuration mode",
+    why: "Every config command lives below global config. You always start here.",
+    steps: [
+      { cmd: "enable", mode: "ex", desc: "Move from user EXEC (>) to privileged EXEC (#).", alt: ["en"] },
+      { cmd: "configure terminal", mode: "pr", desc: "Enter global configuration mode.", alt: ["conf t", "config t", "configure t"] },
+    ],
+  },
+  {
+    title: "2. Identity and base security",
+    why: "Name the box, lock privileged mode, then encrypt any plaintext passwords so the rest of the config is protected as you type it.",
+    steps: [
+      { cmd: "hostname R1", mode: "g", desc: "Set the device name to R1.", alt: [] },
+      { cmd: "enable secret class", mode: "g", desc: "Encrypted password to enter privileged EXEC. Preferred over 'enable password'.", alt: [] },
+      { cmd: "service password-encryption", mode: "g", desc: "Weakly encrypt all plaintext passwords shown in the config.", alt: [] },
+      { cmd: "banner motd #Authorized access only#", mode: "g", desc: "Message-of-the-day banner shown before login.", alt: [] },
+    ],
+  },
+  {
+    title: "3. Console and VTY line access",
+    why: "Console = physical port. VTY = remote sessions (Telnet/SSH). Restrict VTY to SSH only and authenticate against the local user database.",
+    steps: [
+      { cmd: "line console 0", mode: "g", desc: "Enter console line configuration.", alt: ["line con 0"] },
+      { cmd: "password cisco", mode: "l", desc: "Set the line password.", alt: [] },
+      { cmd: "login", mode: "l", desc: "Require the line password at login.", alt: [] },
+      { cmd: "logging synchronous", mode: "l", desc: "Stop console log messages from interrupting what you type.", alt: [] },
+      { cmd: "exec-timeout 5 0", mode: "l", desc: "Auto log-out after 5 minutes idle (5 min, 0 sec).", alt: [] },
+      { cmd: "line vty 0 15", mode: "g", desc: "Enter all 16 virtual terminal lines for remote access.", alt: [] },
+      { cmd: "login local", mode: "l", desc: "Authenticate remote logins against the local username database.", alt: [] },
+      { cmd: "transport input ssh", mode: "l", desc: "Allow only SSH on the VTY lines (block Telnet).", alt: [] },
+    ],
+  },
+  {
+    title: "4. Enable SSH (remote management)",
+    why: "Order matters: hostname and domain-name must exist before the RSA key will generate, and the key must exist before SSH works.",
+    steps: [
+      { cmd: "username admin secret cisco", mode: "g", desc: "Create a local user with an encrypted password (needed for 'login local').", alt: [] },
+      { cmd: "ip domain-name lab.local", mode: "g", desc: "Set the domain name; the RSA key is named host.domain.", alt: ["ip domain name lab.local"] },
+      { cmd: "crypto key generate rsa", mode: "g", desc: "Generate the RSA key pair for SSH (use a 1024-bit+ modulus when prompted).", alt: [] },
+      { cmd: "ip ssh version 2", mode: "g", desc: "Force the more secure SSH version 2.", alt: [] },
+    ],
+  },
+  {
+    title: "5. IP addressing",
+    why: "Routers address physical interfaces. Switches get one management IP on an SVI plus a default gateway. Interfaces come up only after 'no shutdown'.",
+    steps: [
+      { cmd: "interface gigabitEthernet 0/0", mode: "g", desc: "Router: enter a physical interface.", alt: ["int g0/0", "interface g0/0", "int gig0/0"] },
+      { cmd: "ip address 192.168.1.1 255.255.255.0", mode: "if", desc: "Assign an IP address and mask to the interface.", alt: [] },
+      { cmd: "no shutdown", mode: "if", desc: "Administratively enable the interface (router ports are down by default).", alt: ["no shut"] },
+      { cmd: "interface vlan 1", mode: "g", desc: "Switch: enter the management SVI.", alt: ["int vlan 1"] },
+      { cmd: "ip default-gateway 192.168.1.1", mode: "g", desc: "Switch: set the default gateway so it can be reached off-subnet.", alt: [] },
+    ],
+  },
+  {
+    title: "6. Switch port security",
+    why: "Lock an access port to known MAC addresses. Set access mode first, then enable security, limit MACs, learn them stickily, and choose the violation action.",
+    steps: [
+      { cmd: "interface fastEthernet 0/1", mode: "g", desc: "Enter the access port to secure.", alt: ["int f0/1", "interface f0/1", "int fa0/1"] },
+      { cmd: "switchport mode access", mode: "if", desc: "Force the port to access mode (port security needs this).", alt: [] },
+      { cmd: "switchport port-security", mode: "if", desc: "Enable port security on the interface.", alt: [] },
+      { cmd: "switchport port-security maximum 2", mode: "if", desc: "Allow at most 2 learned MAC addresses.", alt: [] },
+      { cmd: "switchport port-security mac-address sticky", mode: "if", desc: "Dynamically learn MACs and save them to the running config.", alt: [] },
+      { cmd: "switchport port-security violation shutdown", mode: "if", desc: "Err-disable the port if an unknown MAC appears.", alt: [] },
+    ],
+  },
+  {
+    title: "7. Save and verify",
+    why: "The running config is in RAM and lost on reload. Save it to NVRAM, then check your work with show commands.",
+    steps: [
+      { cmd: "end", mode: "if", desc: "Jump straight back to privileged EXEC from any config mode.", alt: [] },
+      { cmd: "copy running-config startup-config", mode: "pr", desc: "Save the running config to NVRAM so it survives a reboot.", alt: ["copy run start", "write memory", "wr"] },
+      { cmd: "show ip interface brief", mode: "pr", desc: "List interfaces, their IPs, and up/down status.", alt: ["show ip int br", "sh ip int br"] },
+      { cmd: "show running-config", mode: "pr", desc: "Display the active configuration.", alt: ["show run", "sh run"] },
+      { cmd: "show port-security interface fastEthernet 0/1", mode: "pr", desc: "Verify port-security state on a port.", alt: ["show port-security int f0/1"] },
+    ],
+  },
+];
+
+// Flat list for the drill
+const ALL_STEPS = PHASES.flatMap((p) => p.steps);
+
+const cmd = { mode: "ref", correct: 0, total: 0, current: null };
+
+function normCmd(s) {
+  return String(s).trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function initCommands() {
+  const root = document.getElementById("commandsView");
+  if (!root) return;
+  root.innerHTML = `
+    <section class="card">
+      <div class="drill-head">
+        <div class="seg">
+          <button class="seg-btn active" data-cmode="ref">Reference</button>
+          <button class="seg-btn" data-cmode="drill">Recall drill</button>
+        </div>
+        <div id="cmdActions" class="drill-actions"></div>
+      </div>
+      <div id="cmdBody"></div>
+    </section>
+  `;
+  root.querySelectorAll(".seg-btn").forEach((b) => {
+    b.addEventListener("click", () => {
+      root.querySelectorAll(".seg-btn").forEach((x) => x.classList.remove("active"));
+      b.classList.add("active");
+      cmd.mode = b.dataset.cmode;
+      renderCmd();
+    });
+  });
+  renderCmd();
+}
+
+function renderCmd() {
+  if (cmd.mode === "ref") renderCmdRef();
+  else renderCmdDrill();
+}
+
+function modeBadge(m) {
+  const x = MODES[m];
+  return `<span class="mbadge m-${m}" title="${x.full}">${x.badge}</span>`;
+}
+
+function renderCmdRef() {
+  document.getElementById("cmdActions").innerHTML = "";
+  const legend = Object.entries(MODES)
+    .map(([k, v]) => `${modeBadge(k)} ${v.full}`)
+    .join("&nbsp;&nbsp;");
+  const body = document.getElementById("cmdBody");
+  body.innerHTML = `
+    <div class="legend">${legend}</div>
+    ${PHASES.map((ph) => `
+      <div class="phase">
+        <div class="phase-title">${ph.title}</div>
+        <div class="phase-why">${ph.why}</div>
+        <table class="cmd-table">
+          <thead><tr><th>Mode</th><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            ${ph.steps.map((s) => `
+              <tr>
+                <td>${modeBadge(s.mode)}</td>
+                <td><code>${s.cmd}</code>${s.alt.length ? `<span class="abbr">${s.alt[0]}</span>` : ""}</td>
+                <td>${s.desc}</td>
+              </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>`).join("")}
+  `;
+}
+
+function renderCmdDrill() {
+  document.getElementById("cmdActions").innerHTML =
+    `<button id="cmdNew" class="btn primary">New</button>
+     <button id="cmdReveal" class="btn">Reveal</button>`;
+  newCmdQuestion();
+  document.getElementById("cmdNew").addEventListener("click", newCmdQuestion);
+  document.getElementById("cmdReveal").addEventListener("click", revealCmd);
+}
+
+function newCmdQuestion() {
+  cmd.current = ALL_STEPS[Math.floor(Math.random() * ALL_STEPS.length)];
+  const s = cmd.current;
+  const body = document.getElementById("cmdBody");
+  body.innerHTML = `
+    <p class="prompt">Mode: ${modeBadge(s.mode)} <span class="mode-name">${MODES[s.mode].full}</span></p>
+    <p class="cmd-task">${s.desc}</p>
+    <div class="cmd-entry">
+      <input id="cmdInput" type="text" placeholder="type the command"
+        autocomplete="off" spellcheck="false" autocapitalize="off" />
+      <button id="cmdCheck" class="btn primary">Check</button>
+    </div>
+    <div id="cmdFeedback" class="feedback"></div>
+    <div class="cmd-score">Score: ${cmd.correct} / ${cmd.total}</div>
+  `;
+  const input = document.getElementById("cmdInput");
+  input.focus();
+  const submit = () => checkCmd();
+  document.getElementById("cmdCheck").addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") submit(); });
+}
+
+function checkCmd() {
+  const s = cmd.current;
+  if (!s) return;
+  const input = document.getElementById("cmdInput");
+  const val = normCmd(input.value);
+  if (!val) return;
+  const accepted = [normCmd(s.cmd), ...s.alt.map(normCmd)];
+  const ok = accepted.includes(val);
+  cmd.total++;
+  if (ok) cmd.correct++;
+  input.classList.remove("cell-ok", "cell-bad");
+  input.classList.add(ok ? "cell-ok" : "cell-bad");
+  const fb = document.getElementById("cmdFeedback");
+  fb.className = "feedback " + (ok ? "ok" : "bad");
+  fb.innerHTML = ok
+    ? "Correct."
+    : `Not it. Answer: <code>${s.cmd}</code>`;
+  document.querySelector(".cmd-score").textContent = `Score: ${cmd.correct} / ${cmd.total}`;
+}
+
+function revealCmd() {
+  const s = cmd.current;
+  if (!s) return;
+  const input = document.getElementById("cmdInput");
+  input.value = s.cmd;
+  input.classList.remove("cell-bad");
+  input.classList.add("cell-ok");
+  const fb = document.getElementById("cmdFeedback");
+  fb.className = "feedback warn";
+  fb.innerHTML = s.alt.length
+    ? `Answer: <code>${s.cmd}</code> &nbsp; (also: ${s.alt.map((a) => `<code>${a}</code>`).join(", ")})`
+    : `Answer: <code>${s.cmd}</code>`;
+}
+
 /* Cisco Drill — vanilla JS
    Features:
    - Loads cisco_quiz_questions_v1.json
@@ -3536,19 +3795,22 @@ init();
 bindNav();
 
 let drillReady = false;
+let commandsReady = false;
 function bindNav() {
   const tabs = document.querySelectorAll(".tab");
-  const views = { quiz: document.getElementById("quizView"), drill: document.getElementById("drillView") };
+  const views = {
+    quiz: document.getElementById("quizView"),
+    drill: document.getElementById("drillView"),
+    commands: document.getElementById("commandsView"),
+  };
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       const v = tab.dataset.view;
       tabs.forEach((t) => t.classList.toggle("active", t === tab));
       Object.entries(views).forEach(([k, el]) => el.classList.toggle("active", k === v));
       document.body.dataset.view = v;
-      if (v === "drill" && !drillReady) {
-        initSubnetDrill();
-        drillReady = true;
-      }
+      if (v === "drill" && !drillReady) { initSubnetDrill(); drillReady = true; }
+      if (v === "commands" && !commandsReady) { initCommands(); commandsReady = true; }
     });
   });
 }

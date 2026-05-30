@@ -160,6 +160,29 @@ input.vc:focus{outline:none; border-color:var(--accent)}
 .cheat-body p{margin:6px 0}
 .cheat-body b{color:var(--accent)}
 
+/* ---- worksheet ---- */
+.ws-head{display:flex; flex-wrap:wrap; gap:18px; margin-bottom:18px; align-items:flex-start}
+.ws-req{flex:0 0 auto}
+.ws-ref{flex:1 1 480px; min-width:0}
+.ws-title{font-weight:700; font-size:14px; color:var(--text); margin:0 0 8px;
+  display:flex; align-items:center; gap:10px}
+.linklike{background:none; border:none; color:var(--accent); cursor:pointer;
+  font-size:12px; padding:0; text-decoration:underline}
+.ws-base{margin-top:10px; font-size:13px; color:var(--muted)}
+.ws-base b{color:var(--accent); font-family:ui-monospace,monospace; font-size:14px}
+
+table.mini{border-collapse:collapse; font-size:13px}
+table.mini th, table.mini td{border:1px solid var(--border); padding:5px 12px; text-align:left}
+table.mini th{background:#0c1324; color:var(--muted)}
+table.mini tr.tot td{font-weight:700; color:var(--accent); background:#0b1222}
+
+table.ref{border-collapse:collapse; font-size:11px; width:100%}
+table.ref th, table.ref td{border:1px solid var(--border); padding:4px 6px;
+  text-align:center; white-space:nowrap; font-family:ui-monospace,monospace}
+table.ref th{background:#0c1324; color:var(--muted)}
+table.ref tr td:first-child, table.ref tr th:first-child{position:sticky; left:0;
+  background:#0c1324; color:var(--muted); text-align:left; font-family:system-ui}
+
 </style>
 </head>
 <body>
@@ -3303,19 +3326,59 @@ function qField(label, id) {
     <input id="${id}" type="text" autocomplete="off" spellcheck="false" /></label>`;
 }
 
-/* ---------- VLSM mode: full allocation table ---------- */
+/* ---------- VLSM mode: full worksheet grid ---------- */
+function refChartHtml() {
+  const pfxs = [];
+  for (let p = 17; p <= 32; p++) pfxs.push(p);
+  const head = pfxs.map((p) => `<th>/${p}</th>`).join("");
+  const mask = pfxs.map((p) => `<td>${prefixToMask(p)}</td>`).join("");
+  const block = pfxs.map((p) => `<td>${Math.pow(2, 32 - p)}</td>`).join("");
+  const usable = pfxs.map((p) => `<td>${Math.max(Math.pow(2, 32 - p) - 2, 0)}</td>`).join("");
+  const jump = pfxs.map((p) => {
+    const b = Math.pow(2, 32 - p);
+    const oct = b < 256 ? "4th" : "3rd";
+    const v = b < 256 ? b : b / 256;
+    return `<td>${oct} +${v}</td>`;
+  }).join("");
+  return `<table class="ref">
+    <tr><th>Prefix</th>${head}</tr>
+    <tr><th>Mask</th>${mask}</tr>
+    <tr><th>Block</th>${block}</tr>
+    <tr><th>Usable</th>${usable}</tr>
+    <tr><th>Jump</th>${jump}</tr>
+  </table>`;
+}
+
 function renderVlsm() {
   sub.problem = genProblem();
   const p = sub.problem;
   const rows = [...p.requirements].sort((a, b) => b.hosts - a.hosts);
+  const total = p.requirements.reduce((a, r) => a + r.hosts, 0);
   const body = document.getElementById("drillBody");
   body.innerHTML = `
-    <p class="prompt">Base network: <b>${p.baseIp}/${p.basePrefix}</b>.
-      Allocate each subnet (already sorted largest first).</p>
+    <div class="ws-head">
+      <div class="ws-req">
+        <div class="ws-title">Requirements</div>
+        <table class="mini">
+          <tr><th>Subnet</th><th>Hosts</th></tr>
+          ${p.requirements.map((r) => `<tr><td>${r.label}</td><td>${r.hosts}</td></tr>`).join("")}
+          <tr class="tot"><td>Total</td><td>${total}</td></tr>
+        </table>
+        <div class="ws-base">Primary network<br><b>${p.baseIp}/${p.basePrefix}</b></div>
+      </div>
+      <div class="ws-ref">
+        <div class="ws-title">Reference chart
+          <button id="toggleRef" class="linklike" type="button">hide to test myself</button>
+        </div>
+        <div id="refWrap" class="tbl-wrap">${refChartHtml()}</div>
+      </div>
+    </div>
+
+    <div class="ws-title">Allocation — fill it in (sorted largest first)</div>
     <div class="tbl-wrap">
     <table class="vlsm">
       <thead><tr>
-        <th>Subnet</th><th>Hosts</th><th>Prefix</th><th>Mask</th>
+        <th>Subnet</th><th>Hosts</th><th>Block</th><th>Prefix</th><th>Mask</th>
         <th>Network</th><th>1st host</th><th>Last host</th><th>Broadcast</th>
       </tr></thead>
       <tbody>
@@ -3323,7 +3386,8 @@ function renderVlsm() {
           <tr data-row="${i}">
             <td>${r.label}</td>
             <td>${r.hosts}</td>
-            ${cell(i, "prefix", 5)}
+            ${cell(i, "block", 6)}
+            ${cell(i, "prefix", 4)}
             ${cell(i, "mask", 14)}
             ${cell(i, "network", 14)}
             ${cell(i, "firstHost", 14)}
@@ -3334,6 +3398,13 @@ function renderVlsm() {
     </table>
     </div>
   `;
+  const tref = document.getElementById("toggleRef");
+  tref.addEventListener("click", () => {
+    const w = document.getElementById("refWrap");
+    const hidden = w.style.display === "none";
+    w.style.display = hidden ? "" : "none";
+    tref.textContent = hidden ? "hide to test myself" : "show reference";
+  });
 }
 function cell(row, field, size) {
   return `<td><input class="vc" data-row="${row}" data-field="${field}"

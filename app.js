@@ -8,7 +8,6 @@
    - Optional localStorage persistence
 */
 
-const DATA_URL = "cisco_quiz_questions_v1.json?v=1.0";
 const persistKey = "cisco_drill_state_v1";
 
 const els = {
@@ -57,18 +56,14 @@ function bindNav() {
 }
 
 async function init() {
-  try {
-    const res = await fetch(DATA_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load question bank");
-    const data = await res.json();
-    bank = data.questions || [];
-    bankSig = `${data.version || "unknown"}:${bank.length}`;
-    console.log(`Loaded bank v${data.version} with ${bank.length} questions`);
-  } catch (e) {
-    failHard("Could not load the JSON. Make sure the file is in the same folder.");
-    console.error(e);
+  const data = window.CISCO_BANK;
+  if (!data || !Array.isArray(data.questions)) {
+    failHard("Question bank not loaded. Make sure questions.js is included before app.js.");
     return;
   }
+  bank = data.questions;
+  bankSig = `${data.version || "unknown"}:${bank.length}`;
+  console.log(`Loaded bank v${data.version} with ${bank.length} questions`);
 
   const saved = loadState();
   if (saved && saved.sig === bankSig) {

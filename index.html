@@ -15,29 +15,38 @@
     <div id="progressText" class="progress-text">0 / 0</div>
   </header>
 
+  <nav class="nav container">
+    <button class="tab active" data-view="quiz">Quiz</button>
+    <button class="tab" data-view="drill">Subnetting Drill</button>
+  </nav>
+
   <main class="container">
-    <section id="card" class="card" aria-live="polite">
-      <div class="meta">
-        <span id="domain" class="pill"></span>
-        <span id="difficulty" class="pill"></span>
-      </div>
-      <h2 id="questionText" class="question">Loading...</h2>
+    <div id="quizView" class="view active">
+      <section id="card" class="card" aria-live="polite">
+        <div class="meta">
+          <span id="domain" class="pill"></span>
+          <span id="difficulty" class="pill"></span>
+        </div>
+        <h2 id="questionText" class="question">Loading...</h2>
 
-      <div id="choices" class="choices" role="listbox" aria-label="answer choices"></div>
+        <div id="choices" class="choices" role="listbox" aria-label="answer choices"></div>
 
-      <div id="feedback" class="feedback" aria-live="polite"></div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
 
-      <div id="explain" class="explain hidden">
-        <div class="explain-title">Why this is correct</div>
-        <div id="explainText"></div>
-        <div id="refs" class="refs"></div>
-      </div>
+        <div id="explain" class="explain hidden">
+          <div class="explain-title">Why this is correct</div>
+          <div id="explainText"></div>
+          <div id="refs" class="refs"></div>
+        </div>
 
-      <div class="controls">
-        <button id="nextBtn" class="btn primary" disabled>Next</button>
-        <button id="resetBtn" class="btn">Reset</button>
-      </div>
-    </section>
+        <div class="controls">
+          <button id="nextBtn" class="btn primary" disabled>Next</button>
+          <button id="resetBtn" class="btn">Reset</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="drillView" class="view"></div>
   </main>
 
   <footer class="foot">
@@ -48,6 +57,7 @@
     </label>
   </footer>
 
+  <script src="subnet.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

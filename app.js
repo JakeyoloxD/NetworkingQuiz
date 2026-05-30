@@ -36,6 +36,25 @@ let answeredCorrect = false;
 let bankSig = "";
 
 init();
+bindNav();
+
+let drillReady = false;
+function bindNav() {
+  const tabs = document.querySelectorAll(".tab");
+  const views = { quiz: document.getElementById("quizView"), drill: document.getElementById("drillView") };
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const v = tab.dataset.view;
+      tabs.forEach((t) => t.classList.toggle("active", t === tab));
+      Object.entries(views).forEach(([k, el]) => el.classList.toggle("active", k === v));
+      document.body.dataset.view = v;
+      if (v === "drill" && !drillReady) {
+        initSubnetDrill();
+        drillReady = true;
+      }
+    });
+  });
+}
 
 async function init() {
   try {

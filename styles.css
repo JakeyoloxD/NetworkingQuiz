@@ -94,3 +94,61 @@ h1{margin:0; font-size:18px; letter-spacing:.5px}
   display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:13px;
 }
 .toggle{display:flex; align-items:center; gap:8px; user-select:none}
+
+/* ---- nav / views ---- */
+.nav{display:flex; gap:8px; margin:20px auto 0; padding:0 16px}
+.tab{
+  padding:9px 16px; border-radius:10px 10px 0 0; border:1px solid var(--border);
+  border-bottom:none; background:#0c1324; color:var(--muted); cursor:pointer;
+  font-size:14px; font-weight:600;
+}
+.tab.active{background:#1f2a44; color:var(--text); border-color:#2c3a5f}
+.view{display:none}
+.view.active{display:block}
+body[data-view="drill"] .progress-wrap,
+body[data-view="drill"] .progress-text{visibility:hidden}
+
+/* ---- drill ---- */
+.drill-head{
+  display:flex; flex-wrap:wrap; gap:12px; align-items:center;
+  justify-content:space-between; margin-bottom:14px;
+}
+.seg{display:inline-flex; border:1px solid var(--border); border-radius:10px; overflow:hidden}
+.seg-btn{
+  padding:8px 14px; background:#0c1324; color:var(--muted); border:none;
+  cursor:pointer; font-size:13px; font-weight:600;
+}
+.seg-btn.active{background:#1f2a44; color:var(--text)}
+.drill-actions{display:flex; gap:8px; flex-wrap:wrap}
+
+.prompt{margin:0 0 14px; font-size:16px; color:var(--text)}
+.prompt b{color:var(--accent)}
+
+.qgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px}
+.field{display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--muted)}
+.field input{
+  padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+  background:#0c1324; color:var(--text); font-size:15px; font-family:ui-monospace,monospace;
+}
+.field input:focus{outline:none; border-color:var(--accent)}
+
+.tbl-wrap{overflow-x:auto}
+table.vlsm{width:100%; border-collapse:collapse; font-size:13px}
+table.vlsm th, table.vlsm td{
+  padding:8px 10px; border:1px solid var(--border); text-align:left; white-space:nowrap;
+}
+table.vlsm th{background:#0c1324; color:var(--muted); font-weight:600}
+table.vlsm td:first-child{font-weight:600}
+input.vc{
+  padding:6px 8px; border-radius:8px; border:1px solid var(--border);
+  background:#0b1222; color:var(--text); font-family:ui-monospace,monospace; font-size:13px;
+}
+input.vc:focus{outline:none; border-color:var(--accent)}
+.cell-ok{border-color:rgba(33,197,93,.7) !important; background:rgba(33,197,93,.10) !important}
+.cell-bad{border-color:rgba(239,68,68,.75) !important; background:rgba(239,68,68,.10) !important}
+
+.cheat{margin-top:16px; border:1px dashed #243044; border-radius:12px; background:#0b1222}
+.cheat summary{cursor:pointer; padding:10px 12px; font-weight:600; font-size:14px}
+.cheat-body{padding:0 12px 12px; color:var(--muted); font-size:13px}
+.cheat-body p{margin:6px 0}
+.cheat-body b{color:var(--accent)}
